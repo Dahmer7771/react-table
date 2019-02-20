@@ -20,7 +20,7 @@ span {
   top: 40%;
 }
 
-#Module {
+.Module {
   position: relative;
   margin: 60px;
   display: inline-block;
@@ -77,11 +77,12 @@ td {
 .BtnLeft {
   right: 100%;
   margin-top: 2px;
+  top: 2px;
 }
 
 .BtnTop {
   bottom: 100%;
-  left: 0%;
+  left: 2px;
   margin-left: 2px;
 }
 
