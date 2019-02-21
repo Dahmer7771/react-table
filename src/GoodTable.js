@@ -3,12 +3,8 @@ import React, {Component} from 'react';
 class GoodTable extends Component {
     state = {
         style: {
-            ButtonMinusColumn: {
-
-            },
-            ButtonMinusRow: {
-
-            }
+            ButtonMinusColumn: {},
+            ButtonMinusRow: {}
         },
         rowsInit: this.props.initialHeight,
         columnsInit: this.props.initialWidth,
@@ -16,7 +12,7 @@ class GoodTable extends Component {
         currentRowNum: 0,
         currentColumnNum: 0,
 
-        timerHideButtons: {},
+        timerHideButtons: {}
     }
 
     TableInit = (width, height) => {
@@ -44,11 +40,9 @@ class GoodTable extends Component {
             let columns = [];
 
             for(let i = 0; i < width; i++) {
-                if(i === 2) columns.push(<td key={i} style={{backgroundColor: 'red'}}></td>)
-                else {
-                    columns.push(
+                columns.push(
                     <td key={i}></td>
-                )}
+                )
             }
 
             return columns;
@@ -56,37 +50,65 @@ class GoodTable extends Component {
     }
 
     ShowButtons = (MinusColumnOffset, MinusRowOffset) => {
-        this.setState({
-            style: {
-                ButtonMinusColumn: {
-                    visibility: 'visible',
-                    left: MinusColumnOffset
-                },
+        const currentTable = document.getElementsByClassName(this.props.className)[0];
 
-                ButtonMinusRow: {
-                    visibility: 'visible',
-                    top: MinusRowOffset
+        if(currentTable.rows.length !== 1 && currentTable.rows[0].cells.length !== 1) {
+            this.setState({
+                style: {
+                    ButtonMinusRow: {
+                        visibility: 'visible',
+                        top: MinusRowOffset
+                    },
+                    ButtonMinusColumn: {
+                        visibility: 'visible',
+                        left: MinusColumnOffset
+                    }
                 }
-            }
-        })
+            })
+        }
+
+        else if (currentTable.rows.length !== 1) {
+            this.setState({
+                style: {
+                    ButtonMinusRow: {
+                        visibility: 'visible',
+                        top: MinusRowOffset
+                    }
+                }
+            })
+        }
+
+        else if (currentTable.rows[0].cells.length !== 1) {
+            this.setState({
+                style: {
+                    ButtonMinusColumn: {
+                        visibility: 'visible',
+                        left: MinusColumnOffset
+                    }
+                }
+            })
+        }
     }
 
     AddColumn = () => {
-        let columns = this.state.columnsInit;
+        let currentTable = document.getElementsByClassName(this.props.className)[0];
 
-        this.setState({
-            columnsInit: columns + 1
-        })
-
+        for(let row of currentTable.rows) {
+            row.insertCell(-1);
+        }
     }
 
     AddRow = () => {
-        let rows = this.state.rowsInit;
+        let currentTable = document.getElementsByClassName(this.props.className)[0];
+        let cellsInRows = currentTable.rows[0].cells.length;
 
-        this.setState({
-            rowsInit: rows + 1
-        })
+        currentTable.insertRow(-1);
 
+        let lastRow = currentTable.rows[currentTable.rows.length - 1];
+
+        for(let i = 0; i < cellsInRows; i++) {
+            lastRow.insertCell(i);
+        }
     }
 
     MinusColumn = () => {
@@ -100,11 +122,6 @@ class GoodTable extends Component {
                 row.deleteCell(this.state.currentColumnNum);
             }
 
-            let columns = this.state.columnsInit;
-            this.setState({
-                columnsInit:  columns - 1
-            })
-
             minusColumnBtn.style.left = currentTable.rows[0].cells[currentTable.rows[0].cells.length - 1].offsetLeft + 'px';
 
             this.HideMinusButtons();
@@ -117,12 +134,7 @@ class GoodTable extends Component {
 
         if(currentTable.rows.length !== 1) {
             currentTable.deleteRow(this.state.currentRowNum);
-
-            let rows = this.state.rowsInit;
-            this.setState({
-                rowsInit: rows - 1
-            })
-
+            
             minusRowBtn.style.top = currentTable.rows[currentTable.rows.length - 1].offsetTop + 'px';
 
             this.HideMinusButtons();
@@ -131,6 +143,8 @@ class GoodTable extends Component {
 
     TableOnMouseOverHandler = (event) => {
         let target = event.target;
+
+        this.ClearTimerHideButtons();
 
         if(target.tagName !== 'TD') return;
 
@@ -141,7 +155,7 @@ class GoodTable extends Component {
             currentColumnNum: target.cellIndex
         })
 
-        this.ShowMinusButtons();
+        // this.ShowButtons();
     }
 
     HideMinusButtons = () => {
@@ -157,17 +171,27 @@ class GoodTable extends Component {
         })
     }
 
-    ShowMinusButtons = () => {
-        const currentTable = document.getElementsByClassName(this.props.className)[0];
-        const btnMinusColumn = document.getElementsByClassName('BtnTop')[0];
-        const btnMinusRow = document.getElementsByClassName('BtnLeft')[0];
+    // ShowMinusButtons = () => {
+    //     const currentTable = document.getElementsByClassName(this.props.className)[0];
+    //     const btnMinusColumn = document.getElementsByClassName('BtnTop')[0];
+    //     const btnMinusRow = document.getElementsByClassName('BtnLeft')[0];
 
-        if (currentTable.rows.length !== 1) {
-            btnMinusRow.style.visibility = 'visible';
-        }
-        if (currentTable.rows[0].cells.length !== 1) {
-            btnMinusColumn.style.visibility = 'visible';
-        }
+    //     if (currentTable.rows.length !== 1) {
+    //         btnMinusRow.style.visibility = 'visible';
+    //     }
+    //     if (currentTable.rows[0].cells.length !== 1) {
+    //         btnMinusColumn.style.visibility = 'visible';
+    //     }
+    // }
+
+    SetTimerHideButtons = () => {
+        this.setState({
+            timerHideButtons: setTimeout(this.HideMinusButtons, 500)
+        })    
+    }
+
+    ClearTimerHideButtons = () => {
+        clearTimeout(this.state.timerHideButtons);
     }
 
     render() {
@@ -175,12 +199,16 @@ class GoodTable extends Component {
             <div className="Module">
                 <div className="OperationButton ButtonMinus BtnTop" 
                     style={this.state.style.ButtonMinusColumn}
-                    onClick={() => this.MinusColumn()}><span>-</span>
+                    onClick={() => this.MinusColumn()}
+                    onMouseOver={() => this.ClearTimerHideButtons()}
+                    onMouseOut={() => this.SetTimerHideButtons()}><span>-</span>
                 </div>
 
                 <div className="OperationButton ButtonMinus BtnLeft" 
                     style={this.state.style.ButtonMinusRow}
-                    onClick={() => this.MinusRow()}><span>-</span>
+                    onClick={() => this.MinusRow()}
+                    onMouseOver={() => this.ClearTimerHideButtons()}
+                    onMouseOut={() => this.SetTimerHideButtons()}><span>-</span>
                 </div>
 
                 <div className="OperationButton ButtonPlus BtnBottom" 
@@ -194,7 +222,8 @@ class GoodTable extends Component {
                 </div>
 
                 <table className={this.props.className}
-                    onMouseOver={this.TableOnMouseOverHandler.bind(this)}>
+                    onMouseOver={this.TableOnMouseOverHandler.bind(this)}
+                    onMouseOut={() => this.SetTimerHideButtons()}>
                         {this.TableInit(this.state.columnsInit, this.state.rowsInit)}
                 </table>
             </div>
