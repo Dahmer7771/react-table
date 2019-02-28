@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class NewGoodTable extends Component {
     constructor(props) {
@@ -102,6 +103,7 @@ class NewGoodTable extends Component {
             for(let i = 0; i < table.length; i++) {
                 table[i].splice(this.state.currentColumnNum, 1);
             }
+
 
             this.hideMinusButtons();
 
@@ -270,6 +272,13 @@ class NewGoodTable extends Component {
             </div>
         )
     }
+}
+
+NewGoodTable.propTypes = {
+    className: PropTypes.string,
+    initialHeight: PropTypes.number,
+    initialWidth: PropTypes.number,
+    cellSize: PropTypes.number
 }
 
 export default NewGoodTable;
