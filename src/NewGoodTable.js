@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Button from './Button';
 
 class NewGoodTable extends Component {
     constructor(props) {
@@ -244,25 +245,37 @@ class NewGoodTable extends Component {
     render() {
         return(
             <div className="Module">
-                <div className="OperationButton ButtonMinus BtnTop"
+                <Button buttonPosition="BtnTop"
+                    buttonType="ButtonMinus"
                     style={this.state.style.ButtonMinusColumn}
                     onMouseOver={() => this.clearTimerHideButtons()}
                     onMouseOut={() => this.setTimerHideButtons()}
-                    onClick={() => this.deleteColumn()}><span>-</span></div>
+                    onClick={() => this.deleteColumn()}>
+                    <span>-</span>
+                </Button>
 
-                <div className="OperationButton ButtonMinus BtnLeft"
+                <Button buttonPosition="BtnLeft"
+                    buttonType="ButtonMinus"
                     style={this.state.style.ButtonMinusRow}
                     onMouseOver={() => this.clearTimerHideButtons()}
                     onMouseOut={() => this.setTimerHideButtons()}
-                    onClick={() => this.deleteRow()}><span>-</span></div>
+                    onClick={() => this.deleteRow()}>
+                    <span>-</span>
+                </Button>
 
-                <div className="OperationButton ButtonPlus BtnBottom"
+                <Button buttonPosition="BtnBottom"
+                    buttonType="ButtonPlus"
                     style={this.state.cellSize}
-                    onClick={() => this.addRow()}><span>+</span></div>
+                    onClick={() => this.addRow()}>
+                    <span>+</span>
+                </Button>
 
-                <div className="OperationButton ButtonPlus BtnRight"
+                <Button buttonPosition="BtnRight"
+                    buttonType="ButtonPlus"
                     style={this.state.cellSize}
-                    onClick={() => this.addColumn()}><span>+</span></div>
+                    onClick={() => this.addColumn()}>
+                    <span>+</span>
+                </Button>
                     
                 <table className={this.props.className}
                     onMouseOver={this.tableOnMouseOverHandler.bind(this)}
