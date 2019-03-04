@@ -105,7 +105,6 @@ class NewGoodTable extends Component {
                 table[i].splice(this.state.currentColumnNum, 1);
             }
 
-
             this.hideMinusButtons();
 
             this.setState({
@@ -151,28 +150,15 @@ class NewGoodTable extends Component {
         this.setState({
             style: {
                 ButtonMinusColumn: {
-                    visibility: 'hidden',
-                    width: this.props.cellSize + 'px',
-                    height: this.props.cellSize + 'px'
+                    ...this.state.style.ButtonMinusColumn,
+                    visibility: 'hidden'
                 },
                 ButtonMinusRow: {
-                    visibility: 'hidden',
-                    width: this.props.cellSize + 'px',
-                    height: this.props.cellSize + 'px'
+                    ...this.state.style.ButtonMinusRow,
+                    visibility: 'hidden'
                 }
             }
         })
-
-        // let style = Object.assign({}, this.state.style);
-        // style.ButtonMinusColumn.visibility = 'hidden';
-
-        // style.ButtonMinusRow.visibility = 'hidden';
-
-        // console.log(style);
-
-        // this.setState({
-        //     style
-        // })
     }
 
     showMinusButtons = (minusColumnOffset, minusRowOffset) => {
@@ -180,54 +166,45 @@ class NewGoodTable extends Component {
         let columnsInTable = this.state.table[0].length;
 
         if(rowsInTable !== 1 && columnsInTable !== 1) {
-            let style = Object.assign({}, this.state.style);
-
-            style.ButtonMinusRow = {
-                visibility: 'visible',
-                top: minusRowOffset,
-                width: this.props.cellSize + 'px',
-                height: this.props.cellSize + 'px'
-            }
-
-            style.ButtonMinusColumn = {
-                visibility: 'visible',
-                left: minusColumnOffset,
-                width: this.props.cellSize + 'px',
-                height: this.props.cellSize + 'px'
-            }
-
             this.setState({
-                style
+                style: {
+                    ButtonMinusRow: {
+                        ...this.state.style.ButtonMinusRow,
+                        visibility: 'visible',
+                        top: minusRowOffset
+                    },
+                    ButtonMinusColumn: {
+                        ...this.state.style.ButtonMinusColumn,
+                        visibility: 'visible',
+                        left: minusColumnOffset
+                    }
+                }
             })
         }
 
         else if(rowsInTable !== 1) {
-            let style = Object.assign({}, this.state.style);
-
-            style.ButtonMinusRow = {
-                visibility: 'visible',
-                top: minusRowOffset,
-                width: this.props.cellSize + 'px',
-                height: this.props.cellSize + 'px'
-            }
-
             this.setState({
-                style
+                style: {
+                    ...this.state.style,
+                    ButtonMinusRow: {
+                        ...this.state.style.ButtonMinusRow,
+                        visibility: 'visible',
+                        top: minusRowOffset
+                    }
+                }
             })
         }
 
         else if(columnsInTable !== 1) {
-            let style = Object.assign({}, this.state.style);
-
-            style.ButtonMinusColumn = {
-                visibility: 'visible',
-                left: minusColumnOffset,
-                width: this.props.cellSize + 'px',
-                height: this.props.cellSize + 'px'
-            }
-
             this.setState({
-                style
+                style: {
+                    ...this.state.style,
+                    ButtonMinusColumn: {
+                        ...this.state.style.ButtonMinusColumn,
+                        visibility: 'visible',
+                        left: minusColumnOffset
+                    }
+                }
             })
         }
     }
