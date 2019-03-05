@@ -6,37 +6,38 @@ class NewGoodTable extends Component {
     constructor(props) {
         super(props);
 
+        const { initialWidth, initialHeight, cellSize } = this.props;
         this.state = {
             style: {
                 ButtonMinusRow: {
                     visibility: 'hidden',
                     top: '2px',
-                    width: this.props.cellSize + 'px',
-                    height: this.props.cellSize + 'px'
+                    width: cellSize + 'px',
+                    height: cellSize + 'px'
                 },
                 ButtonMinusColumn: {
                     visibility: 'hidden',
                     left: '2px',
-                    width: this.props.cellSize + 'px',
-                    height: this.props.cellSize + 'px'
+                    width: cellSize + 'px',
+                    height: cellSize + 'px'
                 }
             },
 
             table: [],
             
-            initialWidth: this.props.initialWidth,
-            initialHeight: this.props.initialHeight,
+            initialWidth: initialWidth,
+            initialHeight: initialHeight,
             cellSize : {
-                width: this.props.cellSize + 'px',
-                height: this.props.cellSize + 'px',
-                minWidth: this.props.cellSize + 'px'
+                width: cellSize + 'px',
+                height: cellSize + 'px',
+                minWidth: cellSize + 'px'
             },
 
             currentRowNum: 0,
             currentColumnNum: 0,
 
             timerHideButtons: {}
-        }
+        };
     }
 
     componentWillMount = () => {
@@ -54,7 +55,7 @@ class NewGoodTable extends Component {
 
         this.setState({
             table
-        })
+        });
     }
 
     addRow = () => {
@@ -67,7 +68,7 @@ class NewGoodTable extends Component {
 
         this.setState({
             table
-        })
+        });
     }
 
     addColumn = () => {
@@ -79,7 +80,7 @@ class NewGoodTable extends Component {
 
         this.setState({
             table
-        })
+        });
     }
 
     deleteRow = () => {
@@ -92,8 +93,7 @@ class NewGoodTable extends Component {
             
             this.setState({
                 table
-            })
-
+            });
         }
     }
 
@@ -109,7 +109,7 @@ class NewGoodTable extends Component {
 
             this.setState({
                 table
-            })
+            });
         }
     }
 
@@ -122,13 +122,13 @@ class NewGoodTable extends Component {
                             {row.map((cell, index) => {
                                 return(
                                     <td key={index} style={this.state.cellSize}></td>
-                                )
+                                );
                             })}
                         </tr>
-                    )
+                    );
                 }) }
             </tbody>
-        )
+        );
     }
 
     tableOnMouseOverHandler = (event) => {
@@ -143,7 +143,7 @@ class NewGoodTable extends Component {
         this.setState({
             currentRowNum: target.parentNode.rowIndex,
             currentColumnNum: target.cellIndex
-        })
+        });
     }
 
     hideMinusButtons = () => {
@@ -158,28 +158,29 @@ class NewGoodTable extends Component {
                     visibility: 'hidden'
                 }
             }
-        })
+        });
     }
 
     showMinusButtons = (minusColumnOffset, minusRowOffset) => {
         let rowsInTable = this.state.table.length;
         let columnsInTable = this.state.table[0].length;
+        const { ButtonMinusRow, ButtonMinusColumn } = this.state.style;
 
         if(rowsInTable !== 1 && columnsInTable !== 1) {
             this.setState({
                 style: {
                     ButtonMinusRow: {
-                        ...this.state.style.ButtonMinusRow,
+                        ...ButtonMinusRow,
                         visibility: 'visible',
                         top: minusRowOffset
                     },
                     ButtonMinusColumn: {
-                        ...this.state.style.ButtonMinusColumn,
+                        ...ButtonMinusColumn,
                         visibility: 'visible',
                         left: minusColumnOffset
                     }
                 }
-            })
+            });
         }
 
         else if(rowsInTable !== 1) {
@@ -187,12 +188,12 @@ class NewGoodTable extends Component {
                 style: {
                     ...this.state.style,
                     ButtonMinusRow: {
-                        ...this.state.style.ButtonMinusRow,
+                        ...ButtonMinusRow,
                         visibility: 'visible',
                         top: minusRowOffset
                     }
                 }
-            })
+            });
         }
 
         else if(columnsInTable !== 1) {
@@ -200,19 +201,19 @@ class NewGoodTable extends Component {
                 style: {
                     ...this.state.style,
                     ButtonMinusColumn: {
-                        ...this.state.style.ButtonMinusColumn,
+                        ...ButtonMinusColumn,
                         visibility: 'visible',
                         left: minusColumnOffset
                     }
                 }
-            })
+            });
         }
     }
 
     setTimerHideButtons = () => {
         this.setState({
             timerHideButtons: setTimeout(this.hideMinusButtons, 500)
-        })    
+        });  
     }
 
     clearTimerHideButtons = () => {
@@ -260,7 +261,7 @@ class NewGoodTable extends Component {
                     {this.makeTable()}
                 </table>
             </div>
-        )
+        );
     }
 }
 
@@ -269,6 +270,6 @@ NewGoodTable.propTypes = {
     initialHeight: PropTypes.number,
     initialWidth: PropTypes.number,
     cellSize: PropTypes.number
-}
+};
 
 export default NewGoodTable;

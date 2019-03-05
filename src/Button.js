@@ -7,7 +7,7 @@ class Button extends Component {
 
         this.state = {
 
-        }
+        };
     }
 
     render() {
@@ -19,7 +19,7 @@ class Button extends Component {
                 onMouseOut={this.props.onMouseOut}>
                 {this.props.children}
             </div>
-        )
+        );
     }
 }
 
@@ -30,6 +30,6 @@ Button.propTypes = {
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
     onClick: PropTypes.func
-}
+};
 
 export default Button;
