@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
+/* eslint-disable react/require-default-props */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React from "react";
+import PropTypes from "prop-types";
 
-class Button extends Component {
-    constructor (props) {
+class Button extends React.Component {
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -11,13 +14,27 @@ class Button extends Component {
     }
 
     render() {
-        return(
-            <div className={`OperationButton ${this.props.buttonType} ${this.props.buttonPosition}`}
-                onClick={this.props.onClick}
-                style={this.props.style}
-                onMouseOver={this.props.onMouseOver}
-                onMouseOut={this.props.onMouseOut}>
-                {this.props.children}
+        const {
+            buttonType,
+            buttonPosition,
+            onClick,
+            onMouseOver,
+            onMouseOut,
+            children,
+            style,
+        } = this.props;
+
+        return (
+            <div
+              role="button"
+              tabIndex="0"
+              className={`OperationButton ${buttonType} ${buttonPosition}`}
+              onClick={onClick}
+              style={style}
+              onMouseOver={onMouseOver}
+              onMouseOut={onMouseOut}
+            >
+                {children}
             </div>
         );
     }
@@ -26,10 +43,11 @@ class Button extends Component {
 Button.propTypes = {
     buttonPosition: PropTypes.string,
     buttonType: PropTypes.string,
-    style: PropTypes.object,
+    style: PropTypes.node,
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    children: PropTypes.node,
 };
 
 export default Button;
