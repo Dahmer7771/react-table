@@ -20,7 +20,7 @@
         "indent": [
             0
         ],
-        "react/jsx-indent": [2, 4],
+        "react/jsx-indent": [2],
         "linebreak-style": [0],
         "quotes": [
             "error",
@@ -34,7 +34,6 @@
             0
         ],
         "prefer-stateless-function": [0],
-        "no-plusplus": [0],
-        "require-default-props": [0]
+        "no-plusplus": [0]
     }
 }

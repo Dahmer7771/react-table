@@ -1,8 +1,4 @@
-/* eslint-disable no-shadow */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-tabs */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
-/* eslint-disable react/require-default-props */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
@@ -11,7 +7,7 @@ class NewGoodTable extends Component {
   constructor(props) {
     super(props);
 
-    const { initialWidth, initialHeight, cellSize } = this.props;
+    const { initialWidth, initialHeight, cellSize } = props;
     this.state = {
       style: {
         ButtonMinusRow: {
@@ -53,12 +49,18 @@ class NewGoodTable extends Component {
       } = this.state;
 
       for (let i = 0; i < initialHeight; i++) {
-        table.push([]);
+        const tr = [];
+        tr.id = i.toString();
+
+        table.push(tr);
       }
 
       for (let i = 0; i < table.length; i++) {
         for (let j = 0; j < initialWidth; j++) {
-          table[i].push({});
+          const td = {};
+          td.id = j.toString();
+
+          table[i].push(td);
         }
       }
 
@@ -69,10 +71,14 @@ class NewGoodTable extends Component {
 
     addRow = () => {
       const { table } = this.state;
-      table.push([]);
+      const tr = [];
+      tr.id = table.length.toString();
+      table.push(tr);
 
       for (let i = 0; i < table[0].length; i++) {
-        table[table.length - 1].push({});
+        const td = {};
+        td.id = i.toString();
+        table[table.length - 1].push(td);
       }
 
       this.setState({
@@ -81,9 +87,11 @@ class NewGoodTable extends Component {
     }
 
     addColumn = () => {
-        const { table } = this.state;
+      const { table } = this.state;
       for (let i = 0; i < table.length; i++) {
-        table[i].push({});
+        const td = {};
+        td.id = table[0].length.toString();
+        table[i].push(td);
       }
 
       this.setState({
@@ -133,15 +141,15 @@ class NewGoodTable extends Component {
       } = this.state;
 
       return (
-          <tbody>
-              { table.map((row, index) => (
-                  <tr key={index}>
-                      {row.map((cell, index) => (
-                          <td key={index} style={cellSize} />
-                      ))}
-                  </tr>
+        <tbody>
+          { table.map(row => (
+            <tr key={row.id}>
+              {row.map(cell => (
+                <td key={cell.id} style={cellSize} />
+              ))}
+            </tr>
               )) }
-          </tbody>
+        </tbody>
       );
     }
 
@@ -161,10 +169,10 @@ class NewGoodTable extends Component {
     }
 
     hideMinusButtons = () => {
-			const {
-				ButtonMinusColumn,
-				ButtonMinusRow,
-			} = this.state;
+      const {
+        ButtonMinusColumn,
+        ButtonMinusRow,
+      } = this.state;
 
       this.setState({
         style: {
@@ -187,7 +195,7 @@ class NewGoodTable extends Component {
       } = this.state;
       const rowsInTable = table.length;
       const columnsInTable = table[0].length;
-			const {
+      const {
         style: {
           ButtonMinusRow,
           ButtonMinusColumn,
@@ -252,9 +260,6 @@ class NewGoodTable extends Component {
           ButtonMinusRow,
           ButtonMinusColumn,
         },
-      } = this.state;
-
-      const {
         cellSize,
       } = this.state;
 
@@ -263,55 +268,55 @@ class NewGoodTable extends Component {
       } = this.props;
 
       return (
-          <div className="Module">
-              <Button
-                buttonPosition="BtnTop"
-                buttonType="ButtonMinus"
-                style={ButtonMinusColumn}
-                onMouseOver={() => this.clearTimerHideButtons()}
-                onMouseOut={() => this.setTimerHideButtons()}
-                onClick={() => this.deleteColumn()}
-              >
-                  <span>-</span>
-              </Button>
+        <div className="Module">
+          <Button
+            buttonPosition="BtnTop"
+            buttonType="ButtonMinus"
+            style={ButtonMinusColumn}
+            onMouseOver={() => this.clearTimerHideButtons()}
+            onMouseOut={() => this.setTimerHideButtons()}
+            onClick={() => this.deleteColumn()}
+          >
+            <span>-</span>
+          </Button>
 
-              <Button
-                buttonPosition="BtnLeft"
-                buttonType="ButtonMinus"
-                style={ButtonMinusRow}
-                onMouseOver={() => this.clearTimerHideButtons()}
-                onMouseOut={() => this.setTimerHideButtons()}
-                onClick={() => this.deleteRow()}
-              >
-                  <span>-</span>
-              </Button>
+          <Button
+            buttonPosition="BtnLeft"
+            buttonType="ButtonMinus"
+            style={ButtonMinusRow}
+            onMouseOver={() => this.clearTimerHideButtons()}
+            onMouseOut={() => this.setTimerHideButtons()}
+            onClick={() => this.deleteRow()}
+          >
+            <span>-</span>
+          </Button>
 
-              <Button
-                buttonPosition="BtnBottom"
-                buttonType="ButtonPlus"
-                style={cellSize}
-                onClick={() => this.addRow()}
-              >
-                  <span>+</span>
-              </Button>
+          <Button
+            buttonPosition="BtnBottom"
+            buttonType="ButtonPlus"
+            style={cellSize}
+            onClick={() => this.addRow()}
+          >
+            <span>+</span>
+          </Button>
 
-              <Button
-                buttonPosition="BtnRight"
-                buttonType="ButtonPlus"
-                style={cellSize}
-                onClick={() => this.addColumn()}
-              >
-                  <span>+</span>
-              </Button>
+          <Button
+            buttonPosition="BtnRight"
+            buttonType="ButtonPlus"
+            style={cellSize}
+            onClick={() => this.addColumn()}
+          >
+            <span>+</span>
+          </Button>
 
-              <table
-                className={className}
-                onMouseOver={this.tableOnMouseOverHandler.bind(this)}
-                onMouseOut={() => this.setTimerHideButtons()}
-              >
-                  {this.makeTable()}
-              </table>
-          </div>
+          <table
+            className={className}
+            onMouseOver={this.tableOnMouseOverHandler.bind(this)}
+            onMouseOut={() => this.setTimerHideButtons()}
+          >
+            {this.makeTable()}
+          </table>
+        </div>
       );
     }
 }
@@ -321,6 +326,13 @@ NewGoodTable.propTypes = {
   initialHeight: PropTypes.number,
   initialWidth: PropTypes.number,
   cellSize: PropTypes.number,
+};
+
+NewGoodTable.defaultProps = {
+  className: "Table_1",
+  initialHeight: 4,
+  initialWidth: 4,
+  cellSize: 50,
 };
 
 export default NewGoodTable;
