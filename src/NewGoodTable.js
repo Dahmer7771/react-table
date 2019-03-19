@@ -26,6 +26,9 @@ class NewGoodTable extends Component {
 
       table: [],
 
+      trKey: 1,
+      tdKey: 1,
+
       initialWidth,
       initialHeight,
       cellSize: {
@@ -48,9 +51,14 @@ class NewGoodTable extends Component {
         initialHeight,
       } = this.state;
 
+      let {
+        trKey,
+        tdKey,
+      } = this.state;
+
       for (let i = 0; i < initialHeight; i++) {
         const tr = [];
-        tr.id = i.toString();
+        tr.id = (trKey++).toString();
 
         table.push(tr);
       }
@@ -58,7 +66,7 @@ class NewGoodTable extends Component {
       for (let i = 0; i < table.length; i++) {
         for (let j = 0; j < initialWidth; j++) {
           const td = {};
-          td.id = j.toString();
+          td.id = (tdKey++).toString();
 
           table[i].push(td);
         }
@@ -66,36 +74,46 @@ class NewGoodTable extends Component {
 
       this.setState({
         table,
+        trKey,
+        tdKey,
       });
     }
 
     addRow = () => {
       const { table } = this.state;
+      let {
+        trKey,
+        tdKey,
+      } = this.state;
       const tr = [];
-      tr.id = table.length.toString();
+      tr.id = (trKey++).toString();
       table.push(tr);
 
       for (let i = 0; i < table[0].length; i++) {
         const td = {};
-        td.id = i.toString();
+        td.id = (tdKey++).toString();
         table[table.length - 1].push(td);
       }
 
       this.setState({
         table,
+        trKey,
+        tdKey,
       });
     }
 
     addColumn = () => {
       const { table } = this.state;
+      let { tdKey } = this.state;
       for (let i = 0; i < table.length; i++) {
         const td = {};
-        td.id = table[0].length.toString();
+        td.id = (tdKey++).toString();
         table[i].push(td);
       }
 
       this.setState({
         table,
+        tdKey,
       });
     }
 
@@ -148,7 +166,7 @@ class NewGoodTable extends Component {
                 <td key={cell.id} style={cellSize} />
               ))}
             </tr>
-              )) }
+          )) }
         </tbody>
       );
     }
