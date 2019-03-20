@@ -45,8 +45,8 @@ class NewGoodTable extends Component {
   }
 
     componentWillMount = () => {
-      const table = [];
       const {
+        table,
         initialWidth,
         initialHeight,
       } = this.state;
@@ -56,24 +56,26 @@ class NewGoodTable extends Component {
         tdKey,
       } = this.state;
 
+      const tableCopy = [...table];
+
       for (let i = 0; i < initialHeight; i++) {
         const tr = [];
         tr.id = (trKey++).toString();
 
-        table.push(tr);
+        tableCopy.push(tr);
       }
 
-      for (let i = 0; i < table.length; i++) {
+      for (let i = 0; i < tableCopy.length; i++) {
         for (let j = 0; j < initialWidth; j++) {
           const td = {};
           td.id = (tdKey++).toString();
 
-          table[i].push(td);
+          tableCopy[i].push(td);
         }
       }
 
       this.setState({
-        table,
+        table: tableCopy,
         trKey,
         tdKey,
       });
@@ -81,22 +83,24 @@ class NewGoodTable extends Component {
 
     addRow = () => {
       const { table } = this.state;
+      const tableCopy = [...table];
       let {
         trKey,
         tdKey,
       } = this.state;
       const tr = [];
-      tr.id = (trKey++).toString();
-      table.push(tr);
 
-      for (let i = 0; i < table[0].length; i++) {
+      tr.id = (trKey++).toString();
+      tableCopy.push(tr);
+
+      for (let i = 0; i < tableCopy[0].length; i++) {
         const td = {};
         td.id = (tdKey++).toString();
-        table[table.length - 1].push(td);
+        tableCopy[tableCopy.length - 1].push(td);
       }
 
       this.setState({
-        table,
+        table: tableCopy,
         trKey,
         tdKey,
       });
@@ -105,14 +109,16 @@ class NewGoodTable extends Component {
     addColumn = () => {
       const { table } = this.state;
       let { tdKey } = this.state;
-      for (let i = 0; i < table.length; i++) {
+      const tableCopy = [...table];
+
+      for (let i = 0; i < tableCopy.length; i++) {
         const td = {};
         td.id = (tdKey++).toString();
-        table[i].push(td);
+        tableCopy[i].push(td);
       }
 
       this.setState({
-        table,
+        table: tableCopy,
         tdKey,
       });
     }
@@ -124,11 +130,12 @@ class NewGoodTable extends Component {
       } = this.state;
 
       if (table.length !== 1) {
-        table.splice(currentRowNum, 1);
+        const tableCopy = [...table];
+        tableCopy.splice(currentRowNum, 1);
 
         this.hideMinusButtons();
         this.setState({
-          table,
+          table: tableCopy,
         });
       }
     }
@@ -138,16 +145,17 @@ class NewGoodTable extends Component {
         table,
         currentColumnNum,
       } = this.state;
+      const tableCopy = [...table];
 
-      if (table[0].length !== 1) {
-        for (let i = 0; i < table.length; i++) {
-          table[i].splice(currentColumnNum, 1);
+      if (tableCopy[0].length !== 1) {
+        for (let i = 0; i < tableCopy.length; i++) {
+          tableCopy[i].splice(currentColumnNum, 1);
         }
 
         this.hideMinusButtons();
 
         this.setState({
-          table,
+          table: tableCopy,
         });
       }
     }
@@ -268,7 +276,6 @@ class NewGoodTable extends Component {
 
     clearTimerHideButtons = () => {
       const { timerHideButtons } = this.state;
-
       clearTimeout(timerHideButtons);
     }
 
